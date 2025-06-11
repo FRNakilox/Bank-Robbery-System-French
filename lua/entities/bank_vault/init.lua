@@ -184,27 +184,27 @@ local function spawnSaved()
 end
 
 hook.Add('InitPostEntity', 'BankRS_SpawnVaults', function()
-    local function checkVersion()
-        if not http or not http.Fetch then
-            MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Impossible de vérifier les mises à jour - HTTP non disponible\n')
-            return
-        end
-        
-        http.Fetch('https://dl.dropboxusercontent.com/s/90pfxdcg0mtbumu/bankVersion.txt', 
-            function(body, size, headers, code)   
-                if code == 200 and body then
-                    if body > '1.8.4' then 
-                        MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Version obsolète détectée, veuillez mettre à jour.\n')
-                    end
-                else
-                    MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Échec de la vérification des mises à jour - Réponse invalide\n')
-                end
-            end,
-            function(error)
-                MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Échec de la vérification des mises à jour: '..error..'\n')
-            end
-        )
+local function checkVersion()
+    if not HTTP or not HTTP.Fetch then
+        MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Impossible de vérifier les mises à jour - HTTP non disponible\n')
+        return
     end
+    
+    HTTP.Fetch('https://dl.dropboxusercontent.com/s/90pfxdcg0mtbumu/bankVersion.txt', 
+        function(body, len, headers, code)   
+            if code == 200 and body then
+                if body > '1.8.4' then 
+                    MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Version obsolète détectée, veuillez mettre à jour.\n')
+                end
+            else
+                MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Échec de la vérification des mises à jour - Réponse invalide\n')
+            end
+        end,
+        function(error)
+            MsgC(Color(255, 0, 0), '[BankRS] ', Color(255, 255, 0), 'Échec de la vérification des mises à jour: '..error..'\n')
+        end
+    )
+end
 
     pcall(checkVersion)
     
